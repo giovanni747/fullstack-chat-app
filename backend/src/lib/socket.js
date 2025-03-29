@@ -6,14 +6,14 @@ import express from "express";
 const app = express();
 const server = http.createServer(app);
 
-const io = new Server( server , {
+const io = new Server(server, {
     cors: {
         origin: process.env.NODE_ENV === 'production' 
             ? true  // Allow same origin in production
-            : "http://localhost:5173", // Dev origin
+            : "http://localhost:5173",
         credentials: true
     }
-})
+});
 export function getReceiverSocketId(userId) { // returnd the socket id of the user
     return userSocketMap[userId];
 }
