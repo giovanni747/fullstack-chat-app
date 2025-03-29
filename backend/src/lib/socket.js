@@ -8,7 +8,10 @@ const server = http.createServer(app);
 
 const io = new Server( server , {
     cors: {
-        origin: ["http://localhost:5173"]
+        origin: process.env.NODE_ENV === 'production' 
+            ? true  // Allow same origin in production
+            : "http://localhost:5173", // Dev origin
+        credentials: true
     }
 })
 export function getReceiverSocketId(userId) { // returnd the socket id of the user
