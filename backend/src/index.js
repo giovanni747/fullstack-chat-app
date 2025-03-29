@@ -20,9 +20,10 @@ const _dirname = path.resolve();
 
 app.use(express.json())
 app.use(cookieParser()) // parse cookie for value
-app.use(cors({
-    origin: "http://localhost:5173",
-    credentials: true,
+app.use(
+    cors({
+        origin: process.env.NODE_ENV === 'production' ? true : "http://localhost:5173",
+        credentials: true
     })
 );
 app.use("/api/auth", authRoutes)
