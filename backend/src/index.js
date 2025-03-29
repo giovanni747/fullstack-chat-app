@@ -8,6 +8,7 @@ import authRoutes from './routes/auth.route.js';
 import messageRoutes from './routes/message.route.js';
 import cors from 'cors';
 import path from 'path';
+import { fileURLToPath } from 'url';
 
 import { app, server } from './lib/socket.js';
 
@@ -27,8 +28,14 @@ app.use(cors({
 app.use("/api/auth", authRoutes)
 app.use("/api/messages", messageRoutes)
 if(process.env.NODE_ENV === 'production'){
-    app.use(express.static(path.join(_dirname, '../frontend/dist')))
-    app.get('*', (req, res) => res.sendFile(path.resolve(_dirname, 'frontend', 'dist', 'index.html')))  
+    const __dirname = path.dirname(fileURLToPath(import.meta.url));
+    const frontendBuildPath = path.join(__dirname, '../../frontend/dist');
+    
+    app.use(express.static(frontendBuildPath));
+    
+    app.get('*', (req, res) => {
+        res.sendFile(path.join(frontendBuildPath, 'index.html'));
+    });
 }
 
 server.listen(PORT, () => {
